@@ -63,21 +63,21 @@ function HomePage() {
         <div className="glow-orb w-64 h-64 bg-neon-magenta top-20 right-1/4" />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-36">
-          <div className="max-w-3xl">
+          <div className="max-w-3xl mx-auto text-center">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-neon-purple/10 border border-neon-purple/20 text-neon-purple text-sm font-medium mb-6">
               <span className="w-2 h-2 rounded-full bg-neon-green animate-pulse" />
               Marketplace of the Future
             </div>
-            <h1 className="text-5xl lg:text-7xl font-extrabold leading-tight mb-6">
+            <h1 className="text-5xl lg:text-7xl font-extrabold leading-tight mb-6 text-center">
               <span className="text-white">Discover </span>
               <span className="gradient-text">Extraordinary</span>
               <br />
               <span className="text-white">Products</span>
             </h1>
-            <p className="text-lg text-white/50 max-w-xl mb-8 leading-relaxed">
+            <p className="text-lg text-white/50 max-w-xl mb-8 leading-relaxed mx-auto text-center">
               A curated multi-vendor marketplace connecting you with innovative sellers and unique products from around the world.
             </p>
-            <div className="flex flex-wrap gap-4">
+            <div className="flex justify-center gap-4 flex-wrap">
               <Link to="/products" className="btn-gradient text-base">
                 Start Exploring
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
