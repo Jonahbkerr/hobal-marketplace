@@ -21,8 +21,8 @@ function RegisterPage() {
       <div className="glow-orb w-72 h-72 bg-neon-magenta -top-10 right-0 blur-3xl opacity-50" />
       <div className="glow-orb w-56 h-56 bg-neon-purple bottom-10 -left-10 blur-3xl opacity-50" />
 
-      <div className="glass-card p-8 w-full max-w-md relative z-10">
-        <div className="text-center mb-8">
+      <div className="glass-card p-8 w-full max-w-md relative z-10 animate-scale-in">
+        <div className="text-center mb-8 animate-fade-in-down delay-100">
           <h1 className="text-2xl font-bold text-white mb-2">Join HOBAL</h1>
           <p className="text-white/40 text-sm">Create your marketplace account</p>
         </div>
@@ -34,7 +34,7 @@ function RegisterPage() {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="input-glass w-full"
+              className="input-glass w-full focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition-all duration-200"
               placeholder="John Doe"
               required
             />
@@ -45,7 +45,7 @@ function RegisterPage() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="input-glass w-full"
+              className="input-glass w-full focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition-all duration-200"
               placeholder="you@example.com"
               required
             />
@@ -56,7 +56,7 @@ function RegisterPage() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="input-glass w-full"
+              className="input-glass w-full focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition-all duration-200"
               placeholder="••••••••"
               required
             />
@@ -66,20 +66,20 @@ function RegisterPage() {
             <select
               value={role}
               onChange={(e) => setRole(e.target.value)}
-              className="input-glass w-full"
+              className="input-glass w-full focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition-all duration-200"
             >
               <option value="customer">Shop (Customer)</option>
               <option value="seller">Sell (Seller)</option>
             </select>
           </div>
-          <button type="submit" className="btn-gradient w-full justify-center py-3 rounded-lg font-medium">
+          <button type="submit" className="btn-gradient w-full justify-center py-3 rounded-lg font-medium btn-press hover:shadow-md transition-all duration-200">
             Create Account
           </button>
         </form>
 
-        <p className="text-center text-sm text-white/40 mt-6">
+        <p className="text-center text-sm text-white/40 mt-6 animate-fade-in-up delay-200">
           Already have an account?{' '}
-          <Link to="/login" className="text-neon-cyan hover:underline">Sign in</Link>
+          <Link to="/login" className="text-neon-cyan hover:text-indigo-300 transition-colors duration-200">Sign in</Link>
         </p>
       </div>
     </div>

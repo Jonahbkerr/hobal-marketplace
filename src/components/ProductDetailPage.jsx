@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ALL_PRODUCTS } from './mockData';
 import { useCart } from './CartContext';
+import { RevealOnScroll } from './useScrollReveal';
 
 function ProductDetailPage() {
   const { id } = useParams();
   const product = ALL_PRODUCTS.find((p) => p.id === Number(id));
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState('description');
+  const [cartBounce, setCartBounce] = useState(false);
   const { addToCart } = useCart();
 
   if (!product) {
@@ -34,19 +36,24 @@ function ProductDetailPage() {
 
       <div className="grid lg:grid-cols-2 gap-10">
         {/* Image */}
-        <div className="glass-card overflow-hidden">
-          <img src={product.image} alt={product.name} className="w-full aspect-square object-cover" />
-        </div>
+        <RevealOnScroll>
+          <div className="glass-card overflow-hidden">
+            <div className="overflow-hidden">
+              <img src={product.image} alt={product.name} className="w-full aspect-square object-cover hover:scale-105 transition-transform duration-500" />
+            </div>
+          </div>
+        </RevealOnScroll>
 
         {/* Info */}
-        <div>
+        <RevealOnScroll animation="animate-slide-in-right">
+          <div>
           {product.badge && <span className="badge mb-3 inline-block">{product.badge}</span>}
           <h1 className="text-3xl font-bold text-white mb-2">{product.name}</h1>
           <p className="text-white/40 mb-4">by <span className="text-neon-cyan">{product.seller}</span></p>
 
           <div className="flex items-center gap-3 mb-6">
             <div className="flex items-center gap-0.5">
-              {[1,2,3,4,5].map((s) => <span key={s} className={`text-lg ${s <= Math.round(product.rating) ? 'star-filled' : 'star-empty'}`}>★</span>)}
+              {[1,2,3,4,5].map((s) => <span key={s} className={`text-lg ${s <= Math.round(product.rating) ? 'star-filled' : 'star-empty'} hover:scale-125 transition-transform duration-150`}>★</span>)}
             </div>
             <span className="text-white/50">{product.rating}</span>
             <span className="text-white/30">({product.reviews} reviews)</span>
@@ -73,11 +80,11 @@ function ProductDetailPage() {
           {/* Quantity + Add to Cart */}
           <div className="flex items-center gap-4 mb-6">
             <div className="flex items-center glass-card overflow-hidden">
-              <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="px-4 py-3 text-white/60 hover:text-white hover:bg-white/5 transition-colors">−</button>
+              <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="px-4 py-3 text-white/60 hover:text-white hover:bg-white/5 transition-colors btn-press">−</button>
               <span className="px-4 py-3 text-white font-medium min-w-[48px] text-center">{quantity}</span>
-              <button onClick={() => setQuantity(quantity + 1)} className="px-4 py-3 text-white/60 hover:text-white hover:bg-white/5 transition-colors">+</button>
+              <button onClick={() => setQuantity(quantity + 1)} className="px-4 py-3 text-white/60 hover:text-white hover:bg-white/5 transition-colors btn-press">+</button>
             </div>
-            <button onClick={() => addToCart(product, quantity)} className="btn-gradient flex-1 justify-center text-base py-3.5">
+            <button onClick={() => { addToCart(product, quantity); setCartBounce(true); setTimeout(() => setCartBounce(false), 500); }} className={`btn-gradient flex-1 justify-center text-base py-3.5 ${cartBounce ? 'animate-cart-bounce' : ''}`}>
               Add to Cart — ${(product.price * quantity).toFixed(2)}
             </button>
           </div>
@@ -88,7 +95,8 @@ function ProductDetailPage() {
             </svg>
             Add to Wishlist
           </button>
-        </div>
+          </div>
+        </RevealOnScroll>
       </div>
 
       {/* Tabs */}
@@ -171,24 +179,26 @@ function ProductDetailPage() {
 
       {/* Related Products */}
       {related.length > 0 && (
-        <section className="mt-16">
-          <h2 className="text-2xl font-bold text-white mb-6">You May Also Like</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {related.map((p) => (
-              <Link key={p.id} to={`/product/${p.id}`} className="glass-card overflow-hidden group cursor-pointer">
-                <div className="relative aspect-square overflow-hidden">
-                  <img src={p.image} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                  {p.badge && <span className="absolute top-3 left-3 badge">{p.badge}</span>}
-                </div>
-                <div className="p-4">
-                  <p className="text-xs text-white/40 mb-1">{p.seller}</p>
-                  <h3 className="text-sm font-semibold text-white/90 mb-2 group-hover:text-neon-cyan transition-colors">{p.name}</h3>
-                  <span className="text-lg font-bold text-white">${p.price}</span>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </section>
+        <RevealOnScroll>
+          <section className="mt-16">
+            <h2 className="text-2xl font-bold text-white mb-6">You May Also Like</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {related.map((p) => (
+                <Link key={p.id} to={`/product/${p.id}`} className="glass-card overflow-hidden group cursor-pointer card-hover">
+                  <div className="relative aspect-square overflow-hidden">
+                    <img src={p.image} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 img-zoom" />
+                    {p.badge && <span className="absolute top-3 left-3 badge">{p.badge}</span>}
+                  </div>
+                  <div className="p-4">
+                    <p className="text-xs text-white/40 mb-1">{p.seller}</p>
+                    <h3 className="text-sm font-semibold text-white/90 mb-2 group-hover:text-neon-cyan transition-colors">{p.name}</h3>
+                    <span className="text-lg font-bold text-white">${p.price}</span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        </RevealOnScroll>
       )}
     </div>
   );

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { RevealOnScroll } from './useScrollReveal';
 import { CATEGORIES, FEATURED_PRODUCTS, TOP_SELLERS } from './mockData';
 
 function StarRating({ rating }) {
@@ -64,27 +65,29 @@ function HomePage() {
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-36">
           <div className="max-w-3xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-neon-purple/10 border border-neon-purple/20 text-neon-purple text-sm font-medium mb-6">
-              <span className="w-2 h-2 rounded-full bg-neon-green animate-pulse" />
-              Marketplace of the Future
-            </div>
-            <h1 className="text-5xl lg:text-7xl font-extrabold leading-tight mb-6 text-center">
+            <RevealOnScroll animation="animate-fade-in" delay="delay-100">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-neon-purple/10 border border-neon-purple/20 text-neon-purple text-sm font-medium mb-6">
+                <span className="w-2 h-2 rounded-full bg-neon-green animate-pulse" />
+                Marketplace of the Future
+              </div>
+            </RevealOnScroll>
+            <h1 className="text-5xl lg:text-7xl font-extrabold leading-tight mb-6 text-center animate-fade-in-up">
               <span className="text-white">Discover </span>
               <span className="gradient-text">Extraordinary</span>
               <br />
               <span className="text-white">Products</span>
             </h1>
-            <p className="text-lg text-white/50 max-w-xl mb-8 leading-relaxed mx-auto text-center">
+            <p className="text-lg text-white/50 max-w-xl mb-8 leading-relaxed mx-auto text-center animate-fade-in-up delay-150">
               A curated multi-vendor marketplace connecting you with innovative sellers and unique products from around the world.
             </p>
-            <div className="flex justify-center gap-4 flex-wrap">
-              <Link to="/products" className="btn-gradient text-base">
+            <div className="flex justify-center gap-4 flex-wrap animate-scale-in delay-300">
+              <Link to="/products" className="btn-gradient text-base hover:scale-105 hover:shadow-lg active:scale-95 transition-all duration-200">
                 Start Exploring
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
               </Link>
-              <Link to="/register" className="btn-outline text-base">
+              <Link to="/register" className="btn-outline text-base hover:scale-105 active:scale-95 transition-all duration-200">
                 Become a Seller
               </Link>
             </div>
@@ -109,77 +112,89 @@ function HomePage() {
       </section>
 
       {/* Categories */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="flex items-center justify-between mb-8">
-          <h2 className="text-2xl font-bold text-white">Browse Categories</h2>
-          <Link to="/products" className="text-sm text-neon-cyan hover:underline">View All →</Link>
-        </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-          {CATEGORIES.map((cat) => (
-            <Link
-              key={cat.id}
-              to={`/products?category=${cat.id}`}
-              className="glass-card p-5 text-center group cursor-pointer"
-            >
-              <div className="text-3xl mb-2">{cat.icon}</div>
-              <p className="text-sm font-medium text-white/80 group-hover:text-neon-cyan transition-colors">{cat.name}</p>
-              <p className="text-xs text-white/30 mt-1">{cat.count.toLocaleString()} items</p>
-            </Link>
-          ))}
-        </div>
-      </section>
+      <RevealOnScroll animation="animate-fade-in-up" delay="delay-200">
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-2xl font-bold text-white">Browse Categories</h2>
+            <Link to="/products" className="text-sm text-neon-cyan hover:underline">View All →</Link>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+            {CATEGORIES.map((cat) => (
+              <Link
+                key={cat.id}
+                to={`/products?category=${cat.id}`}
+                className="glass-card p-5 text-center group cursor-pointer"
+              >
+                <div className="text-3xl mb-2">{cat.icon}</div>
+                <p className="text-sm font-medium text-white/80 group-hover:text-neon-cyan transition-colors">{cat.name}</p>
+                <p className="text-xs text-white/30 mt-1">{cat.count.toLocaleString()} items</p>
+              </Link>
+            ))}
+          </div>
+        </section>
+      </RevealOnScroll>
 
       {/* Featured Products */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="flex items-center justify-between mb-8">
-          <h2 className="text-2xl font-bold text-white">Featured Products</h2>
-          <Link to="/products" className="text-sm text-neon-cyan hover:underline">See All →</Link>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {FEATURED_PRODUCTS.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
-      </section>
+      <RevealOnScroll animation="animate-fade-in-up" delay="delay-300">
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-2xl font-bold text-white">Featured Products</h2>
+            <Link to="/products" className="text-sm text-neon-cyan hover:underline">See All →</Link>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {FEATURED_PRODUCTS.map((product, index) => (
+              <RevealOnScroll key={product.id} animation="animate-fade-in-up" delay={`delay-[${index * 100}ms]`}>
+                <ProductCard product={product} />
+              </RevealOnScroll>
+            ))}
+          </div>
+        </section>
+      </RevealOnScroll>
 
       {/* Top Sellers */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="flex items-center justify-between mb-8">
-          <h2 className="text-2xl font-bold text-white">Top Sellers</h2>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {TOP_SELLERS.map((seller) => (
-            <div key={seller.id} className="glass-card p-6 flex flex-col items-center text-center">
-              <img src={seller.avatar} alt={seller.name} className="w-16 h-16 rounded-full mb-3 border-2 border-neon-purple/30" />
-              <h3 className="font-semibold text-white">{seller.name}</h3>
-              <div className="flex items-center gap-1 mt-1">
-                <StarRating rating={seller.rating} />
-                <span className="text-xs text-white/40">{seller.rating}</span>
-              </div>
-              <div className="flex items-center gap-4 mt-3 text-xs text-white/40">
-                <span>{seller.products} products</span>
-                <span>{seller.sales} sales</span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      <RevealOnScroll animation="animate-fade-in-up" delay="delay-400">
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-2xl font-bold text-white">Top Sellers</h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {TOP_SELLERS.map((seller) => (
+              <RevealOnScroll key={seller.id} animation="animate-fade-in-up" delay={`delay-[${seller.id * 50}ms]`}>
+                <div className="glass-card p-6 flex flex-col items-center text-center">
+                  <img src={seller.avatar} alt={seller.name} className="w-16 h-16 rounded-full mb-3 border-2 border-neon-purple/30" />
+                  <h3 className="font-semibold text-white">{seller.name}</h3>
+                  <div className="flex items-center gap-1 mt-1">
+                    <StarRating rating={seller.rating} />
+                    <span className="text-xs text-white/40">{seller.rating}</span>
+                  </div>
+                  <div className="flex items-center gap-4 mt-3 text-xs text-white/40">
+                    <span>{seller.products} products</span>
+                    <span>{seller.sales} sales</span>
+                  </div>
+                </div>
+              </RevealOnScroll>
+            ))}
+          </div>
+        </section>
+      </RevealOnScroll>
 
       {/* CTA / Newsletter */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="glass-card p-12 text-center relative overflow-hidden">
-          <div className="glow-orb w-64 h-64 bg-neon-purple -top-32 -left-32" />
-          <div className="glow-orb w-48 h-48 bg-neon-cyan -bottom-24 -right-24" />
-          <div className="relative">
-            <h2 className="text-3xl font-bold text-white mb-3">Stay Ahead of the Curve</h2>
-            <p className="text-white/50 mb-8 max-w-md mx-auto">Get notified about trending products, exclusive deals, and new sellers joining the marketplace.</p>
-            <div className="flex max-w-md mx-auto gap-3">
-              <input type="email" placeholder="Enter your email" className="input-glass flex-1" />
-              <button className="btn-gradient whitespace-nowrap">Subscribe</button>
+      <RevealOnScroll animation="animate-fade-in-up" delay="delay-500">
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+          <div className="glass-card p-12 text-center relative overflow-hidden">
+            <div className="glow-orb w-64 h-64 bg-neon-purple -top-32 -left-32" />
+            <div className="glow-orb w-48 h-48 bg-neon-cyan -bottom-24 -right-24" />
+            <div className="relative">
+              <h2 className="text-3xl font-bold text-white mb-3 animate-fade-in-down delay-100">Stay Ahead of the Curve</h2>
+              <p className="text-white/50 mb-8 max-w-md mx-auto animate-fade-in-down delay-200">Get notified about trending products, exclusive deals, and new sellers joining the marketplace.</p>
+              <div className="flex max-w-md mx-auto gap-3 animate-scale-in delay-300">
+                <input type="email" placeholder="Enter your email" className="input-glass flex-1" />
+                <button className="btn-gradient whitespace-nowrap hover:scale-105 active:scale-95 transition-all duration-200">Subscribe</button>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </RevealOnScroll>
 
       {/* Footer */}
       <footer className="border-t border-glass-border py-12">
