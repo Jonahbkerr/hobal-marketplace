@@ -1,13 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from './CartContext';
 import { useAuth } from './AuthContext';
 
 function Navbar() {
   const [searchQuery, setSearchQuery] = useState('');
+  const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
-  const { cartCount } = useCart();
+  const { cartCount, lastAdded } = useCart();
   const { user, logout } = useAuth();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -22,11 +31,11 @@ function Navbar() {
   };
 
   return (
-    <nav className="sticky top-0 z-50 bg-surface/80 backdrop-blur-xl border-b border-glass-border">
+    <nav className={`sticky top-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-surface/80 backdrop-blur-xl border-b border-glass-border' : 'bg-transparent'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2">
+          <Link to="/" className="flex items-center gap-2 hover:scale-105 transition-transform duration-200">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-neon-cyan to-neon-purple flex items-center justify-center text-white font-bold text-sm">
               H
             </div>
@@ -51,14 +60,14 @@ function Navbar() {
 
           {/* Nav Links */}
           <div className="flex items-center gap-1">
-            <Link to="/products" className="px-3 py-2 text-sm text-white/60 hover:text-neon-cyan transition-colors rounded-lg hover:bg-white/5">
+            <Link to="/products" className="px-3 py-2 text-sm text-white/60 hover:text-neon-cyan transition-colors rounded-lg hover:bg-white/5 relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-indigo-600 after:transition-all after:duration-300 hover:after:w-full">
               Explore
             </Link>
-            <Link to="/cart" className="relative px-3 py-2 text-sm text-white/60 hover:text-neon-cyan transition-colors rounded-lg hover:bg-white/5">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <Link to="/cart" className="relative px-3 py-2 text-sm text-white/60 hover:text-neon-cyan transition-colors rounded-lg hover:bg-white/5 relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-indigo-600 after:transition-all after:duration-300 hover:after:w-full">
+              <svg className={`w-5 h-5 ${lastAddedId ? 'animate-cart-bounce' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
               </svg>
-              {cartCount > 0 && <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-neon-magenta text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+              {cartCount > 0 && <span className={`absolute -top-0.5 -right-0.5 w-4 h-4 bg-neon-magenta text-white text-[10px] font-bold rounded-full flex items-center justify-center ${lastAddedId ? 'animate-badge-pop' : ''}`}>
                 {cartCount}
               </span>}
             </Link>

@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { ALL_PRODUCTS, CATEGORIES } from './mockData';
+import { RevealOnScroll } from './useScrollReveal';
 
 function ProductsPage() {
   const [searchParams] = useSearchParams();
@@ -118,32 +119,34 @@ function ProductsPage() {
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-              {filtered.map((product) => (
-                <Link key={product.id} to={`/product/${product.id}`} className="glass-card overflow-hidden group cursor-pointer">
-                  <div className="relative aspect-square overflow-hidden">
-                    <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                    {product.badge && <span className="absolute top-3 left-3 badge">{product.badge}</span>}
-                    {product.originalPrice && (
-                      <span className="absolute top-3 right-3 text-xs font-semibold text-neon-green bg-neon-green/10 px-2 py-1 rounded-full border border-neon-green/20">
-                        -{Math.round((1 - product.price / product.originalPrice) * 100)}%
-                      </span>
-                    )}
-                  </div>
-                  <div className="p-4">
-                    <p className="text-xs text-white/40 mb-1">{product.seller}</p>
-                    <h3 className="text-sm font-semibold text-white/90 mb-2 line-clamp-2 group-hover:text-neon-cyan transition-colors">{product.name}</h3>
-                    <div className="flex items-center gap-2 mb-2">
-                      <div className="flex items-center gap-0.5">
-                        {[1,2,3,4,5].map((s) => <span key={s} className={s <= Math.round(product.rating) ? 'star-filled' : 'star-empty'}>★</span>)}
+              {filtered.map((product, index) => (
+                <div key={product.id} style={{ animationDelay: `${index * 80}ms` }} className="animate-fade-in-up">
+                  <Link to={`/product/${product.id}`} className="glass-card overflow-hidden group cursor-pointer card-hover">
+                    <div className="relative aspect-square overflow-hidden">
+                      <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 img-zoom" />
+                      {product.badge && <span className="absolute top-3 left-3 badge">{product.badge}</span>}
+                      {product.originalPrice && (
+                        <span className="absolute top-3 right-3 text-xs font-semibold text-neon-green bg-neon-green/10 px-2 py-1 rounded-full border border-neon-green/20 animate-badge-pop">
+                          -{Math.round((1 - product.price / product.originalPrice) * 100)}%
+                        </span>
+                      )}
+                    </div>
+                    <div className="p-4">
+                      <p className="text-xs text-white/40 mb-1">{product.seller}</p>
+                      <h3 className="text-sm font-semibold text-white/90 mb-2 line-clamp-2 group-hover:text-neon-cyan transition-colors">{product.name}</h3>
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="flex items-center gap-0.5">
+                          {[1,2,3,4,5].map((s) => <span key={s} className={s <= Math.round(product.rating) ? 'star-filled' : 'star-empty'}>★</span>)}
+                        </div>
+                        <span className="text-xs text-white/30">({product.reviews})</span>
                       </div>
-                      <span className="text-xs text-white/30">({product.reviews})</span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-lg font-bold text-white">${product.price}</span>
+                        {product.originalPrice && <span className="text-sm text-white/30 line-through">${product.originalPrice}</span>}
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-lg font-bold text-white">${product.price}</span>
-                      {product.originalPrice && <span className="text-sm text-white/30 line-through">${product.originalPrice}</span>}
-                    </div>
-                  </div>
-                </Link>
+                  </Link>
+                </div>
               ))}
             </div>
           )}

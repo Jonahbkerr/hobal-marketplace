@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from './CartContext';
+
 
 const STEPS = ['Shipping', 'Payment', 'Review'];
 
@@ -8,6 +9,8 @@ function CheckoutPage() {
   const { items, cartTotal, clearCart } = useCart();
   const [step, setStep] = useState(0);
   const [orderPlaced, setOrderPlaced] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+
 
   const shipping = cartTotal >= 50 ? 0 : 5.99;
 
