@@ -1,65 +1,96 @@
-import { Link } from 'react-router-dom';
-import { useAuth } from './AuthContext';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from './CartContext';
-import { useState } from 'react';
+import { useAuth } from './AuthContext';
 
-export default function Navbar() {
-  const { user, logout } = useAuth();
+function Navbar() {
+  const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate();
   const { cartCount } = useCart();
-  const [menuOpen, setMenuOpen] = useState(false);
+  const { user, logout } = useAuth();
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/products?q=${encodeURIComponent(searchQuery.trim())}`);
+    }
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
 
   return (
-    <nav className="bg-white shadow-sm border-b sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-        <Link to="/" className="text-2xl font-bold text-primary-600">MarketHub</Link>
-        
-        {/* Mobile Hamburger Button */}
-        <button 
-          className="md:hidden p-2 rounded-lg hover:bg-gray-100"
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Toggle menu"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            {menuOpen ? (
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+    <nav className="sticky top-0 z-50 bg-surface/80 backdrop-blur-xl border-b border-glass-border">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <Link to="/" className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-neon-cyan to-neon-purple flex items-center justify-center text-white font-bold text-sm">
+              H
+            </div>
+            <span className="text-xl font-bold gradient-text tracking-tight">HOBAL</span>
+          </Link>
+
+          {/* Search */}
+          <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-lg mx-8">
+            <div className="relative w-full">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search products, sellers, categories..."
+                className="input-glass w-full pl-10 pr-4 py-2.5 text-sm"
+              />
+              <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
+          </form>
+
+          {/* Nav Links */}
+          <div className="flex items-center gap-1">
+            <Link to="/products" className="px-3 py-2 text-sm text-white/60 hover:text-neon-cyan transition-colors rounded-lg hover:bg-white/5">
+              Explore
+            </Link>
+            <Link to="/cart" className="relative px-3 py-2 text-sm text-white/60 hover:text-neon-cyan transition-colors rounded-lg hover:bg-white/5">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+              </svg>
+              {cartCount > 0 && <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-neon-magenta text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                {cartCount}
+              </span>}
+            </Link>
+
+            {/* User Menu or Sign In */}
+            {user ? (
+              <div className="flex items-center gap-2 ml-2">
+                <span className="text-sm text-white/80 hidden sm:inline">{user.name || user.email.split('@')[0]}</span>
+                {user.role === 'seller' && (
+                  <Link to="/seller" className="px-3 py-1.5 text-xs bg-neon-purple/20 text-neon-purple rounded-lg hover:bg-neon-purple/30">
+                    Dashboard
+                  </Link>
+                )}
+                {user.role === 'admin' && (
+                  <Link to="/admin" className="px-3 py-1.5 text-xs bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30">
+                    Admin Panel
+                  </Link>
+                )}
+                <button onClick={handleLogout} className="ml-2 btn-gradient text-sm py-1.5 px-4">
+                  Logout
+                </button>
+              </div>
             ) : (
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            )}
-          </svg>
-        </button>
-
-        {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-6">
-          <Link to="/products" className="text-gray-600 hover:text-primary-600">Browse</Link>
-          {user?.role === 'seller' && <Link to="/seller" className="text-gray-600 hover:text-primary-600">Seller Dashboard</Link>}
-          {user?.role === 'admin' && <Link to="/admin" className="text-gray-600 hover:text-primary-600">Admin Panel</Link>}
-        </div>
-
-        {/* Mobile Menu Dropdown */}
-        {menuOpen && (
-          <div className="md:hidden absolute top-full left-0 w-full bg-white border-b shadow-lg py-2">
-            <Link to="/products" className="block px-4 py-2 text-gray-600 hover:text-primary-600" onClick={() => setMenuOpen(false)}>Browse</Link>
-            {user?.role === 'seller' && (
-              <Link to="/seller" className="block px-4 py-2 text-gray-600 hover:text-primary-600" onClick={() => setMenuOpen(false)}>Seller Dashboard</Link>
-            )}
-            {user?.role === 'admin' && (
-              <Link to="/admin" className="block px-4 py-2 text-gray-600 hover:text-primary-600" onClick={() => setMenuOpen(false)}>Admin Panel</Link>
+              <Link to="/login" className="ml-2 btn-gradient text-sm py-2 px-4">
+                Sign In
+              </Link>
             )}
           </div>
-        )}
-
-        <div className="flex items-center gap-4">
-          <Link to="/cart" className="text-gray-600 hover:text-primary-600 flex items-center">🛒 Cart {cartCount > 0 && <span className="bg-red-500 text-white text-xs rounded-full px-1.5 ml-1">{cartCount}</span>}</Link>
-          {user ? (
-            <div className="flex items-center gap-3">
-              <span className="text-sm text-gray-500">{user.name}</span>
-              <button onClick={logout} className="text-sm text-red-500 hover:text-red-700">Logout</button>
-            </div>
-          ) : (
-            <Link to="/login" className="bg-primary-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-primary-700">Sign In</Link>
-          )}
         </div>
       </div>
     </nav>
   );
 }
+
+export default Navbar;

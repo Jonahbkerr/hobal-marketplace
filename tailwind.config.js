@@ -1,24 +1,35 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,jsx,ts,tsx}",
-  ],
+  content: ['./index.html', './src/**/*.{js,jsx}'],
   theme: {
     extend: {
       colors: {
-        primary: {
-          50: '#f0f9ff',
-          100: '#e0f2fe',
-          200: '#bae6fd',
-          300: '#7dd3fc',
-          400: '#38bdf8',
-          500: '#0ea5e9',
-          600: '#0284c7',
-          700: '#0369a1',
-          800: '#075985',
-          900: '#0c4a6e',
+        surface: {
+          DEFAULT: '#0a0a0f',
+          card: 'rgba(15, 15, 25, 0.8)',
+          hover: 'rgba(20, 20, 35, 0.9)',
         },
+        neon: {
+          cyan: '#00f5ff',
+          purple: '#8b5cf6',
+          magenta: '#ff006e',
+          green: '#00ff88',
+        },
+        glass: {
+          border: 'rgba(255, 255, 255, 0.08)',
+          light: 'rgba(255, 255, 255, 0.04)',
+        },
+      },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+      },
+      boxShadow: {
+        glow: '0 0 20px rgba(0, 245, 255, 0.15)',
+        'glow-purple': '0 0 20px rgba(139, 92, 246, 0.15)',
+        'glow-magenta': '0 0 20px rgba(255, 0, 110, 0.15)',
+      },
+      backdropBlur: {
+        glass: '16px',
       },
     },
   },
