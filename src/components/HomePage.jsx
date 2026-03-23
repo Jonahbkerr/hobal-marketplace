@@ -90,18 +90,18 @@ function HomePage() {
             </div>
 
             {/* Stats */}
-            <div className="flex gap-10 mt-14">
-              <div>
-                <p className="text-3xl font-bold text-white">12k+</p>
-                <p className="text-sm text-white/40">Active Sellers</p>
+            <div className="mt-16 grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
+              <div className="space-y-1">
+                <p className="text-4xl md:text-5xl font-bold text-neon-cyan font-heading">12k+</p>
+                <p className="text-sm text-white/40 tracking-wide uppercase">Active Sellers</p>
               </div>
-              <div>
-                <p className="text-3xl font-bold text-white">84k+</p>
-                <p className="text-sm text-white/40">Products Listed</p>
+              <div className="space-y-1">
+                <p className="text-4xl md:text-5xl font-bold text-neon-cyan font-heading">84k+</p>
+                <p className="text-sm text-white/40 tracking-wide uppercase">Products Listed</p>
               </div>
-              <div>
-                <p className="text-3xl font-bold text-white">99.2%</p>
-                <p className="text-sm text-white/40">Satisfaction Rate</p>
+              <div className="space-y-1">
+                <p className="text-4xl md:text-5xl font-bold text-neon-cyan font-heading">99.2%</p>
+                <p className="text-sm text-white/40 tracking-wide uppercase">Satisfaction Rate</p>
               </div>
             </div>
           </div>
